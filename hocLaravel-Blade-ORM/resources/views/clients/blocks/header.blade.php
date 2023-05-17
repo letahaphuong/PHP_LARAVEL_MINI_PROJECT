@@ -19,7 +19,7 @@
                         <a class="nav-link" href="{{route('product')}}">Sản phẩm</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Dịch vụ</a>
+                        <a class="nav-link" href="{{route('posts.index')}}">Bài đăng</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">Tin tức</a>

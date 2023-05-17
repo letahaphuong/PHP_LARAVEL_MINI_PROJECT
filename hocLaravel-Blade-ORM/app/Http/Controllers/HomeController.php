@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProductRequest;
+use App\Models\Info;
+use App\Models\Phone;
+use App\Models\Users;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Rules\Uppercase;
@@ -31,6 +34,10 @@ class HomeController extends Controller
     public function products()
     {
         $this->data['title'] = 'San pham';
+        $user = Users::with('phone')->where('phone_id','1');
+//        $user1 = Info::with('user')->find(1);
+        dd($user->phone) ;
+
         return view('clients.products', $this->data);
     }
 

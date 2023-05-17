@@ -92,6 +92,14 @@ return [
             // 'encrypt' => env('DB_ENCRYPT', 'yes'),
             // 'trust_server_certificate' => env('DB_TRUST_SERVER_CERTIFICATE', 'false'),
         ],
+        'backup' => [
+            'driver' => env('BACKUP_DB_CONNECTION', 'mysql'),
+            'host' => env('BACKUP_DB_HOST', '127.0.0.1'),
+            'port' => env('BACKUP_DB_PORT', '3306'),
+            'database' => env('BACKUP_DB_DATABASE', 'forge'),
+            'username' => env('BACKUP_DB_USERNAME', 'forge'),
+            'password' => env('BACKUP_DB_PASSWORD', ''),
+        ],
 
     ],
 

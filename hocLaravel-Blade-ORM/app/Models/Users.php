@@ -4,14 +4,20 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Facades\DB;
 use function Symfony\Component\String\u;
 
 class Users extends Model
 {
     use HasFactory;
-
+    protected $table = 'user';
     private const TABLE = 'user';
+
+    public function phone(): HasOne
+    {
+       return $this->hasOne(Phone::class, 'phone_id','phone_id');
+    }
 
     public function getAllUsers($filters = [], $keywords = '', $sortByArr = [], $perPage = 0)
     {
@@ -318,8 +324,8 @@ class Users extends Model
             ->selectRaw('email,(select count(id) from `groups`) as groups_count')
             ->get();
 
-        dd($user3);
-        $sql = DB::getQueryLog();
-        dd($sql);
+//        dd($user3);
+//        $sql = DB::getQueryLog();
+//        dd($sql);
     }
 }

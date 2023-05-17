@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\PostController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -60,4 +61,9 @@ Route::prefix('users')->name('users.')->group(function () {
     Route::get('/edit/{id}',[UserController::class,'getEdit'])->name('edit');
     Route::post('/update',[UserController::class,'postEdit'])->name('post-edit');
     Route::get('/delete/{id}',[UserController::class, 'delete'])->name('delete');
+});
+
+Route::prefix('posts')->name('posts.')->group(function () {
+    Route::get('/', [PostController::class, 'index'])->name('index');
+    Route::get('/add', [PostController::class, 'add'])->name('add');
 });

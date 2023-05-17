@@ -11,86 +11,14 @@ class Users extends Model
 {
     use HasFactory;
 
-    private const TABLE = 'user';
+    protected $table = 'user';
 
-    public function getAllUsers($filters = [], $keywords = '', $sortByArr = [], $perPage = 0)
-    {
-        DB::enableQueryLog();
-
-        $users = DB::table(self::TABLE)
-            ->select('user.*', 'groups.name as group_name')
-            ->join('groups', 'groups.id', '=', 'user.group_id')
-            ->where('flag_delete', '=', 0);
-        $orderBy = 'create_at';
-        $orderType = 'desc';
-
-        if (!empty($sortByArr) && is_array($sortByArr)) {
-            if (!empty($sortByArr['sortBy']) && !empty($sortByArr['sortType'])) {
-                $orderBy = trim($sortByArr['sortBy']);
-                $orderType = trim($sortByArr['sortType']);
-            }
-        }
-        $users = $users->orderBy('user.' . $orderBy, $orderType);
-
-        if (!empty($filters)) {
-            $users = $users->where($filters);
-        }
-
-        if (!empty($keywords)) {
-            $users = $users->where(function ($query) use ($keywords) {
-                $query->orWhere('fullname', 'like', '%' . $keywords . '%');
-                $query->orWhere('email', 'like', '%' . $keywords . '%');
-            });
-        }
-
-//        $users = $users->get();
-
-        if (!empty($perPage)) {
-            $users = $users->paginate($perPage)->withQueryString();
-        } else {
-            $users = $users->get();
-        }
-
-        return $users;
-    }
-
-    public function addUser($data)
-    {
-        DB::enableQueryLog();
-
-        if (!empty($data)) {
-            $finalData = array_slice($data, 0, -1);
-        }
-        // Thêm dữ liệu (INSERT)
-        return DB::table(self::TABLE)->insert($finalData);
-    }
-
-    public function getDetail($id)
-    {
-//        return DB::select('select * from ' . self::TABLE . ' where id = ?', [$id]);
-        return DB::table(self::TABLE)
-            ->where('id', '=', $id)
-            ->get();
-    }
-
-    public function updateUser($data, $id)
-    {
-        $finalData = array_slice($data, 0, -1);
-        return DB::table(self::TABLE)
-            ->where('id', '=', $id)
-            ->update($finalData);
-
-    }
-
-    public function deleteUser($id)
-    {
-        DB::enableQueryLog();
-
-        return DB::table(self::TABLE)
-            ->where('id', '=', $id)
-            ->update(['flag_delete' => 1]);
-    }
-
+    public $timestamps = false;
+    protected $fillable = [
+        'fullname',
+        'email',
+        'group_id',
+    ];
 
     public function statementUser($sql)
     {

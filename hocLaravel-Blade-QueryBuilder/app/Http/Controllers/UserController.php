@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Users;
+use App\Repositories\User\UserRepositoryRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use RealRashid\SweetAlert\Facades\Alert;
@@ -10,12 +11,16 @@ use App\Http\Requests\UserRequest;
 
 class UserController extends Controller
 {
+    private const TABLE = 'user';
     private $users;
     private const _PER_PAGE = 3;
 
-    public function __construct()
+    protected $userRepository;
+
+    public function __construct(UserRepositoryRepository $userRepository)
     {
         $this->users = new Users();
+        $this->userRepository = $userRepository;
     }
 
     public function index(Request $request)
@@ -47,7 +52,6 @@ class UserController extends Controller
             $keywords = $request->keywords;
         }
 
-
         $sortBy = $request->input('sortBy');
 
         $sortType = $this->makeLowerCase($request->input('sortType'));
@@ -69,7 +73,8 @@ class UserController extends Controller
             'sortType' => $sortType
         ];
 
-        $usersList = $this->users->getAllUsers($filters, $keywords, $sortArray, self::_PER_PAGE);
+//        $usersList = $this->users->getAllUsers($filters, $keywords, $sortArray, self::_PER_PAGE);
+        $usersList = $this->userRepository->getAllUsers(self::TABLE, $filters, $keywords, $sortArray, self::_PER_PAGE);
 //        dd($usersList[0]);
         return view('clients.users.list', compact('title', 'usersList', 'sortType'));
     }
@@ -85,12 +90,11 @@ class UserController extends Controller
     {
 
         $dataInsert = $request->all();
-
-        $flagCreate = $this->users->addUser($dataInsert);
+        $flagCreate = $this->userRepository->addUser(self::TABLE,$dataInsert);
         if ($flagCreate) {
             alert()->success('Thêm mới thành công.');
         } else {
-            alert()->error( 'Thêm mới không thành công.');
+            alert()->error('Thêm mới không thành công.');
         }
         return redirect(route('users.index'))->with([
             'msg' => 'Thêm mới thành công.',
@@ -104,7 +108,7 @@ class UserController extends Controller
 
 
         if (!empty($id)) {
-            $user = $this->users->getDetail($id);
+            $user = $this->userRepository->getDetail(self::TABLE,$id);
             if (!empty($user[0])) {
                 $request->session()->put('id', $id);
                 $user = $user[0];
@@ -136,7 +140,7 @@ class UserController extends Controller
 
         $data = $request->all();
 
-        $flagUpdate = $this->users->updateUser($data, $id);
+        $flagUpdate = $this->userRepository->updateUser(self::TABLE,$data, $id);
         if ($flagUpdate == 0 || $flagUpdate == 1) {
             $status = 'success';
             $titel = 'Sửa thông tin thành công.';
@@ -154,9 +158,9 @@ class UserController extends Controller
     public function delete($id)
     {
         if (!empty($id)) {
-            $user = $this->users->getDetail($id);
+            $user = $this->userRepository->getDetail(self::TABLE,$id);
             if (!empty($user[0])) {
-                $flagDelete = $this->users->deleteUser($id);
+                $flagDelete = $this->userRepository->deleteUser(self::TABLE,$id);
                 if ($flagDelete) {
                     $msg = 'Xóa thành công.';
                     $type = 'success';
