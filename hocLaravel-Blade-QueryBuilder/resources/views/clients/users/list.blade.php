@@ -65,7 +65,7 @@
                     <td>{{$item->group_name}}</td>
                     <td>{!! $item->status == 0 ? '<button class="btn btn-danger">Chưa K/Hoạt</button>' : '<button class="btn btn-success">Kích hoạt</button>' !!}</td>
                     <td>{{date('d-m-Y', strtotime($item->create_at))}}</td>
-                    <td>
+                    <td>data-toggle="modal" data-target="#exampleModal"
                         <a href="{{route('users.edit',['id'=>$item->id])}}"
                            class="btn btn-warning btn-sm">Sửa</a>
                     </td>

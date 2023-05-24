@@ -38,12 +38,12 @@ class UserRepositoryRepositoryEloquent extends BaseRepository implements UserRep
 
     public function getAllUsers($table, $filters = [], $keywords = '', $sortByArr = [], $perPage = 0)
     {
+        $orderBy = 'create_at';
+        $orderType = 'desc';
         $users = DB::table($table)
             ->select('user.*', 'groups.name as group_name')
             ->join('groups', 'groups.id', '=', 'user.group_id')
             ->where('flag_delete', '=', 0);
-        $orderBy = 'create_at';
-        $orderType = 'desc';
 
         if (!empty($sortByArr) && is_array($sortByArr)) {
             if (!empty($sortByArr['sortBy']) && !empty($sortByArr['sortType'])) {
