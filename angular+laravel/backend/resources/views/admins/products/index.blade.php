@@ -82,7 +82,7 @@
                         </tbody>
                     @endforeach
                 </table>
-                {{$billiardList->links()}}
+{{--                {{$billiardList->links()}}--}}
             @else
                 <div class="text-danger text-center">
                     <h1>Chưa có bàn.</h1>
@@ -253,7 +253,7 @@
                         </tbody>
                     @endforeach
                 </table>
-                {{$billiardTypeList->links()}}
+{{--                {{$billiardTypeList->links()}}--}}
             @else
                 <div class="text-danger text-center">
                     <h1>Chưa có loại bàn.</h1>
@@ -378,6 +378,7 @@
                         <th>Tên Danh Mục</th>
                         <th>Tên Sản Phẩm</th>
                         <th>Giá</th>
+                        <th>Sô Lượng Còn</th>
                         <th>Ngày Nhập</th>
                         <th>Chức Năng</th>
                     </tr>
@@ -399,6 +400,7 @@
                             @endswitch
                             <td>{{$value->name}}</td>
                             <td>{{$value->price}}</td>
+                            <td>{{$value->product_quantity}}</td>
                             <td>{{formatDateTime($value->created_at)}}</td>
                             <td>
                                 <a
@@ -421,7 +423,7 @@
                         </tbody>
                     @endforeach
                 </table>
-                {{$productsList->links()}}
+{{--                {{$productsList->links()}}--}}
             @else
                 <div class="text-danger text-center">
                     <h1>Chưa có sản phẩm.</h1>
@@ -582,7 +584,7 @@
                         </tbody>
                     @endforeach
                 </table>
-                {{$categoryList->links()}}
+{{--                {{$categoryList->links()}}--}}
             @else
                 <div class="text-danger text-center">
                     <h1>Chưa có danh mục sản phẩm.</h1>

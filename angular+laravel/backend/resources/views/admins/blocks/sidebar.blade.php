@@ -9,7 +9,7 @@
         <h1><a href="#" class="logo">PhuongLTH Billiard</a></h1>
         <ul class="list-unstyled components mb-5">
             <li class="active">
-                <a type=  href="{{route('billiard.home')}}"><span class="fa fa-home mr-3"></span> Trang Chủ</a>
+                <a href="{{route('home')}}"><span class="fa fa-home mr-3"></span> Trang Chủ</a>
             </li>
             <li>
                 <a href="{{route('billiard.dashboard')}}"><span class="fa fa-user mr-3"></span> Lịch Sử</a>

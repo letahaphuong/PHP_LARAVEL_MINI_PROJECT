@@ -78,4 +78,21 @@ class AttachFacilityRepositoryEloquent extends BaseRepository implements AttachF
             ->update($data);
 
     }
+
+    function updateProductQuantity($data)
+    {
+        $query = DB::table('attach_facility')
+            ->where('id', '=', $data['id'])
+            ->update($data);
+
+        return $query;
+    }
+
+    function getProductByIdAttachFacility($idAttachFacility)
+    {
+        $query = DB::table('attach_facility')
+            ->find($idAttachFacility);
+
+        return $query;
+    }
 }

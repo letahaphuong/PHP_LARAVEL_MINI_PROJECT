@@ -46,7 +46,7 @@ class ManagementRepositoryEloquent extends BaseRepository implements ManagementR
 
         $query = DB::table($table)
             ->select(DB::raw($newColumns));
-        if (!empty($perPage)) {
+        if (!empty($perPage1)) {
             $query = $query->paginate($perPage)->withQueryString();
         } else {
             $query = $query->get();

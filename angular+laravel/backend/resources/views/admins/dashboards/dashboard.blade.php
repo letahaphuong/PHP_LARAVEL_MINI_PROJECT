@@ -46,7 +46,7 @@
                 {{$orderListHistory->links()}}
             @else
                 <div class="text-danger text-center">
-                    <h1>Chưa có bàn.</h1>
+                    <h1 class="text-danger">Chưa Có Hoạt Động.</h1>
                 </div>
             @endif
 

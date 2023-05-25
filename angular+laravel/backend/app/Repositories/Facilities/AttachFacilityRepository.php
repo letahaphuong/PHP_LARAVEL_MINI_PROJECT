@@ -16,4 +16,8 @@ interface AttachFacilityRepository extends RepositoryInterface
     function createAttachFacility($data);
 
     function updateAttachFacility($data);
+
+    function getProductByIdAttachFacility($idAttachFacility);
+
+    function updateProductQuantity($data);
 }

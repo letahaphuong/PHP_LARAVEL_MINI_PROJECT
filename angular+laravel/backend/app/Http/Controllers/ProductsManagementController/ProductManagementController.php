@@ -50,7 +50,7 @@ class ProductManagementController extends Controller
         $selectColumnBilliardTypes = ['id', 'name', 'price', 'created_at'];
         $billiardTypeList = $this->managementRepo->showList(self::TABLE_BILLIARD_TYPE, $selectColumnBilliardTypes, self::_PER_PAGE_BILLIARD_TYPE);
 
-        $selectColumnProducts = ['id', 'category_id', 'name', '	price', 'created_at'];
+        $selectColumnProducts = ['id', 'category_id', 'name', '	price','product_quantity', 'created_at'];
         $productsList = $this->managementRepo->showList(self::TABLE_ATTACH_FACILITY, $selectColumnProducts, self::_PER_PAGE_PRODUCT);
 
         $selectColumnCategories = ['id', 'name', 'created_at'];

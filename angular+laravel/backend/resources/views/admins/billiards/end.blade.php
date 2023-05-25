@@ -19,7 +19,8 @@
                 </div>
                 <div class="col-6 d-flex justify-content-between">
                     <h3>Dịch vụ đi kèm</h3>
-                    <a href="{{route('billiard.create')}}" class="btn d-flex align-items-center btn-sm btn-success">Thêm dịch vụ</a>
+                    <a href="{{route('billiard.create')}}" class="btn d-flex align-items-center btn-sm btn-success">Thêm
+                        dịch vụ</a>
                 </div>
             </div>
         </div>
@@ -115,7 +116,7 @@
                                     <form action="{{route('billiard.update-attach')}}" method="get">
                                         <td width="90">
                                             <input id="myInput" name="quantity" class="form-control" type="number"
-                                                   value="{{$value->quantity}}">
+                                                   value="{{$value->quantity ? $value->quantity : value()}}">
                                             <input type="hidden" value="{{$value->id}}" name="id">
                                         </td>
                                         <td>{{ number_format($value->price * $value->quantity,0,',','.') }}</td>

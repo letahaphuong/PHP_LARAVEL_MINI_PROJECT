@@ -19,6 +19,7 @@ class ActtachFacilityController extends Controller
     protected $categoriesRepository;
 
     private const _PER_PAGE = 8;
+
     public function __construct(
         AttachFacilityRepository $attachFacilityRepository,
         OrderRepository          $orderRepository,
@@ -43,7 +44,7 @@ class ActtachFacilityController extends Controller
 
         if (!empty($request->category_id)) {
             $categoryID = $request->category_id;
-            $filters =  $categoryID;
+            $filters = $categoryID;
         }
 
         if (!empty($request->keywords)) {
@@ -58,12 +59,28 @@ class ActtachFacilityController extends Controller
         $idBilliard = session('id');
 
         $codeOrder = $this->orderRepository->getCodeBilliard($idBilliard);
-//dd($codeOrder);
+
         $order = $this->orderRepository->findOrderById($idBilliard);
 
         $idAttachFacility = $request->id;
 
         $quantity = $request->quantity;
+        $product = $this->attachFacility->getProductByIdAttachFacility($idAttachFacility);
+
+        if (!empty($product) && $product->product_quantity > 0) {
+            $product->product_quantity = $product->product_quantity - $quantity;
+            $dataUpdateFacility = [
+                'id' => $product->id,
+                'category_id' => $product->category_id,
+                'name' => $product->name,
+                'product_quantity' => $product->product_quantity,
+                'price' => $product->price
+            ];
+            $flag = $this->attachFacility->updateProductQuantity($dataUpdateFacility);
+            if (!$flag) {
+                alert()->success('Số lượng trong kho đã hết');
+            }
+        }
 
         $dataCheck = [
             'order_id' => $order->id,
@@ -89,8 +106,8 @@ class ActtachFacilityController extends Controller
                 'quantity' => $object->quantity,
                 'code_order' => $object->code_order
             ];
+            alert()->success('Update thành công.');
             $this->attachFacility->updateAttachFacility($data);
-
         } else {
             $data = [
                 'order_id' => $order->id,
@@ -98,19 +115,11 @@ class ActtachFacilityController extends Controller
                 'quantity' => $quantity,
                 'code_order' => $codeOrder->code_billiard
             ];
+            alert()->success('Thêm thành công.');
             $this->attachFacility->createAttachFacility($data);
         }
 
-//        if ($flag) {
-//            $msg = 'Them thanh cong!';
-//            $status = 'success';
-//        } else {
-//            $msg = 'Them khong thanh cong!';
-//            $status = 'danger';
-//        }
-        return back()->with([
-//            'msg' => $msg,
-//            'status' => $status
-        ]);
+
+        return back();
     }
 }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\BilliardsControllers;
 use App\Http\Controllers\Controller;
 use App\Repositories\BilliardDetails\BilliardDetailRepository;
 use App\Repositories\Billiards\BilliardsRepository;
+use App\Repositories\Facilities\AttachFacilityRepository;
 use App\Repositories\Orders\OrderRepository;
 use DateTime;
 use Illuminate\Http\Request;
@@ -16,6 +17,7 @@ class BilliardsController extends Controller
 
     protected $billiardDetailRepository;
 
+    protected $attachFacility;
     private const _PER_PAGE_ATTACH = 4;
 
 
@@ -25,12 +27,14 @@ class BilliardsController extends Controller
     public function __construct(
         BilliardsRepository      $billiardsRepository,
         OrderRepository          $orderRepository,
-        BilliardDetailRepository $billiardDetailRepository
+        BilliardDetailRepository $billiardDetailRepository,
+        AttachFacilityRepository $attachFacility
     )
     {
         $this->billiardsRepository = $billiardsRepository;
         $this->orderRepository = $orderRepository;
         $this->billiardDetailRepository = $billiardDetailRepository;
+        $this->attachFacility = $attachFacility;
     }
 
     public function home()
@@ -210,6 +214,24 @@ class BilliardsController extends Controller
             $checkExits = $this->billiardDetailRepository->checkExitsId($id);
             if ($checkExits) {
                 $object = $this->billiardDetailRepository->getBilliardDetailForUpdateQuantity($id);
+                $idAttachFacility = $object[0]->attach_facility_id;
+                $product = $this->attachFacility->getProductByIdAttachFacility($idAttachFacility);
+
+                if (!empty($product) && $product->product_quantity > 0) {
+                    $product->product_quantity = $product->product_quantity - ($request->quantity - $object[0]->quantity);
+
+                    $dataUpdateFacility = [
+                        'id' => $product->id,
+                        'category_id' => $product->category_id,
+                        'name' => $product->name,
+                        'product_quantity' => $product->product_quantity,
+                        'price' => $product->price
+                    ];
+                    $flag = $this->attachFacility->updateProductQuantity($dataUpdateFacility);
+                    if (!$flag) {
+                        alert()->success('Số lượng trong kho đã hết');
+                    }
+                }
                 $object->quantity = $request->quantity;
                 $data = [
                     'id' => $id,
