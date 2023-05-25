@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', [HomeController::class, 'index']);
+Route::get('/', [ProductManagementController::class, 'dashboard'])->name('dashboard');
 Route::prefix('billiard')->name('billiard.')->group(function () {
     Route::get('home', [BilliardsController::class, 'home'])->name('home');
     Route::get('/', [BilliardsController::class, 'getAllTable'])->name('index');
